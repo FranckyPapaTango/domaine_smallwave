@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="rafaros_domaine_smallwave_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>rafaros.domaine_smallwave.entities.Categorie</class>
+  <!--    <class>rafaros.domaine_smallwave.entities.File</class> -->
+    <class>rafaros.domaine_smallwave.entities.Commande</class>
+    <class>rafaros.domaine_smallwave.entities.Actualite</class>
+    <class>rafaros.domaine_smallwave.entities.Typecommande</class>
+    <class>rafaros.domaine_smallwave.entities.Image</class>
+    <class>rafaros.domaine_smallwave.entities.Chatteur</class>
+    <class>rafaros.domaine_smallwave.entities.Candidat</class>
+    <class>rafaros.domaine_smallwave.entities.Message</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3308/smallwave?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="root1A@"/>
+    </properties>
+  </persistence-unit>
+</persistence>
