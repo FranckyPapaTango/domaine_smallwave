@@ -26,6 +26,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.annotations.Type;
+
 /**
  *
  * @author BigWave
@@ -54,9 +56,10 @@ public class Actualite extends AbstractEntity implements Serializable {
     private String titre;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 2147483647)
+    @Lob    
+//    @Size(min = 1, max = 2147483647)
     @Column(name = "CORPS")
+    @Type(type = "org.hibernate.type.TextType")
     private String corps;
     @Basic(optional = false)
     @NotNull
@@ -82,15 +85,31 @@ public class Actualite extends AbstractEntity implements Serializable {
         this.id = id;
     }
 
-    public Actualite(Long id, String titre, String corps, String auteur, String email) {
-        this.id = id;
-        this.titre = titre;
-        this.corps = corps;
-        this.auteur = auteur;
-        this.email = email;
-    }
+//    public Actualite(Long id, String titre, String corps, String auteur, String email) {
+//        this.id = id;
+//        this.titre = titre;
+//        this.corps = corps;
+//        this.auteur = auteur;
+//        this.email = email;
+//    }
+    
+    
 
-    public Long getId() {
+    public Actualite(Long id, @NotNull @Size(min = 1, max = 255) String titre, @NotNull String corps,
+			@NotNull @Size(min = 1, max = 255) String auteur, @NotNull @Size(min = 1, max = 50) String email,
+//			Collection<Image> imageCollection, 
+			Categorie idCategorie) {
+		super();
+		this.id = id;
+		this.titre = titre;
+		this.corps = corps;
+		this.auteur = auteur;
+		this.email = email;
+//		this.imageCollection = imageCollection;
+		this.idCategorie = idCategorie;
+	}
+
+	public Long getId() {
         return id;
     }
 
