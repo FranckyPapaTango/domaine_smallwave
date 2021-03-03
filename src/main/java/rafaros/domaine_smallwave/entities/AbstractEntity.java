@@ -15,14 +15,14 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.Version;
 
-import rafaros.domaine_smallwave.tools.ModuleTools;
-import rafaros.domaine_smallwave.tools.Validateur;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
+import rafaros.domaine_smallwave.tools.ModuleTools;
+import rafaros.domaine_smallwave.tools.Validateur;
 
 /**
  *
@@ -32,7 +32,10 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
-    
+
+    /**
+     *
+     */
     private static final long serialVersionUID = 1L;
 
     //	@Version // l'attribut updatedVersionDate remplace la version !
@@ -48,11 +51,28 @@ public abstract class AbstractEntity implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePersistence;
 
-    @Basic(optional = true)
+    @Basic(optional = false)
     @Column(name = "CSS_RAW_COLOR_CODE")
     private String cssRawColorCode;
 
-    public Date getUpdatedVersionDate() {
+    /**
+     * méthode de rappel initialisant l'attribut datePersistence et l'attribut
+     * CssRawColorCode
+     */
+    @PrePersist
+    protected void initDatas() {
+        //setUpdatedVersionDate(ModuleTools.asDateHMS(LocalDateTime.now()));//indice d'update et de version
+        setDatePersistence(ModuleTools.asDateHMS(LocalDateTime.now()));//indice de creation        
+        //datePersistence = ModuleTools.asDateHMS(LocalDateTime.now());
+        setCssRawColorCode(Validateur.bootstrapRowColorValue(Validateur.generateRandomInt()));
+    }
+
+    @PreUpdate
+    private void onUpdate() {
+        setUpdatedVersionDate(ModuleTools.asDateHMS(LocalDateTime.now()));//indice d'update et de version
+    }
+
+	public Date getUpdatedVersionDate() {
 		return updatedVersionDate;
 	}
 
@@ -80,20 +100,43 @@ public abstract class AbstractEntity implements Serializable {
 		return serialVersionUID;
 	}
 
-	/**
-     * méthode de rappel initialisant l'attribut datePersistence et l'attribut
-     * CssRawColorCode
-     */
-    @PrePersist
-    protected void initDatas() {
-        //setUpdatedVersionDate(ModuleTools.asDateHMS(LocalDateTime.now()));//indice d'update et de version
-        setDatePersistence(ModuleTools.asDateHMS(LocalDateTime.now()));//indice de creation        
-        //datePersistence = ModuleTools.asDateHMS(LocalDateTime.now());
-        cssRawColorCode = Validateur.bootstrapRowColorValue(Validateur.generateRandomInt());
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cssRawColorCode == null) ? 0 : cssRawColorCode.hashCode());
+		result = prime * result + ((datePersistence == null) ? 0 : datePersistence.hashCode());
+		result = prime * result + ((updatedVersionDate == null) ? 0 : updatedVersionDate.hashCode());
+		return result;
+	}
 
-    @PreUpdate
-    private void onUpdate() {
-        setUpdatedVersionDate(ModuleTools.asDateHMS(LocalDateTime.now()));//indice d'update et de version
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractEntity other = (AbstractEntity) obj;
+		if (cssRawColorCode == null) {
+			if (other.cssRawColorCode != null)
+				return false;
+		} else if (!cssRawColorCode.equals(other.cssRawColorCode))
+			return false;
+		if (datePersistence == null) {
+			if (other.datePersistence != null)
+				return false;
+		} else if (!datePersistence.equals(other.datePersistence))
+			return false;
+		if (updatedVersionDate == null) {
+			if (other.updatedVersionDate != null)
+				return false;
+		} else if (!updatedVersionDate.equals(other.updatedVersionDate))
+			return false;
+		return true;
+	}
+    
+    
 }
+

@@ -243,7 +243,11 @@ public class Commande extends AbstractEntity implements Serializable {
         this.idTypecommande = idTypecommande;
     }
 
-
+@Override
+public void setCssRawColorCode(String cssRawColorCode) {
+	// TODO Auto-generated method stub
+	super.setCssRawColorCode(cssRawColorCode);
+}
     @Override
     public int hashCode() {
         int hash = 0;
